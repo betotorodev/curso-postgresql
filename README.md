@@ -1,1 +1,1 @@
-# curso-postgresql b Fernando Herrera
+# curso-postgresql by Fernando Herrera
