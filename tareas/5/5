@@ -1,0 +1,30 @@
+
+
+-- ¿Cuál es el idioma (y código del idioma) oficial más hablado por diferentes países en Europa?
+SELECT COUNT(*), countrylanguage."language"
+FROM countrylanguage
+JOIN country ON countrylanguage.countrycode = country.code 
+where isofficial = true AND country.continent = 5
+GROUP BY countrylanguage."language"
+ORDER BY count DESC;
+
+select * from country;
+
+select * from continent;
+
+Select * from "language";
+
+
+
+-- Listado de todos los países cuyo idioma oficial es el más hablado de Europa 
+-- (no hacer subquery, tomar el código anterior)
+SELECT country."name" 
+FROM countrylanguage
+JOIN country ON countrylanguage.countrycode = country.code
+WHERE (countrylanguage.isofficial = true) AND (countrylanguage."language" = 'German');
+
+
+
+
+
+
