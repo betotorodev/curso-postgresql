@@ -1,0 +1,37 @@
+CREATE OR REPLACE FUNCTION sayHello( user_name varchar)
+RETURNS VARCHAR
+AS
+$$
+BEGIN
+	RETURN 'hola' || user_name;
+END;
+$$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_comments_replies( id INTEGER)
+RETURNS json
+AS
+$$
+DECLARE result json;
+
+BEGIN
+	SELECT
+		json_agg( json_build_object (
+			'user', "comments".user_id,
+			'comment', "comments"."content"
+		)) into result
+	FROM "comments"
+	WHERE comment_parent_id = id;
+
+	RETURN result;
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT 
+	a.*,
+	get_comments_replies(a.post_id) as replies
+FROM
+	"comments" a
+WHERE
+	comment_parent_id IS NULL;
