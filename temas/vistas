@@ -11,3 +11,18 @@ ORDER BY weeks DESC;
 SELECT * FROM claps_per_week;
 
 DROP VIEW claps_per_week;
+
+// materializada  
+CREATE MATERIALIZED view claps_per_week_mat as
+SELECT 
+	date_trunc('week', posts.created_at) as weeks, 
+	COUNT(DISTINCT posts.post_id) as posts,
+	SUM(claps.counter) as total_claps
+FROM posts
+INNER JOIN claps ON claps.post_id = posts.post_id
+GROUP BY weeks
+ORDER BY weeks DESC;
+
+SELECT * FROM claps_per_week_mat;
+
+REFRESH VIEW claps_per_week_mat;
